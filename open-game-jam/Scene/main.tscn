@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://ci05lewl8r2n"]
+
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="1_2wwxx"]
+[ext_resource type="Script" uid="uid://dyrmcsyfcjapu" path="res://Scripts/Camera/MainCamera.cs" id="1_f6udf"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_3amdw"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="4_1xcnr"]
+[ext_resource type="Script" uid="uid://dgv36y2xgh0a1" path="res://Scripts/Camera/CameraMoveFollow.cs" id="5_3amdw"]
+[ext_resource type="Script" uid="uid://dcya2h1658ta" path="res://Scripts/Core/BuildGrid.cs" id="6_buildgrid"]
+[ext_resource type="Script" uid="uid://g6ftndbk5tqk" path="res://Scripts/Core/BuildManager.cs" id="7_ow1sv"]
+
+[sub_resource type="Resource" id="Resource_ow1sv"]
+script = ExtResource("2_3amdw")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6udf"]
+size = Vector2(3844.8, 2160)
+
+[node name="Main" type="Node2D" unique_id=2067297367]
+
+[node name="BuildGrid" type="Node2D" parent="." unique_id=1981709381]
+script = ExtResource("6_buildgrid")
+CellSize = 256
+
+[node name="PhantomCamera2D" type="Node2D" parent="." unique_id=724334024 node_paths=PackedStringArray("follow_target")]
+top_level = true
+script = ExtResource("1_2wwxx")
+priority = 10
+follow_mode = 2
+follow_target = NodePath("../CharacterBody2D")
+zoom = Vector2(0.75, 0.75)
+tween_resource = SubResource("Resource_ow1sv")
+limit_target = NodePath("../CameraBounds/CollisionShape2D")
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
+[node name="MainCamera" type="Camera2D" parent="." unique_id=1049685566]
+physics_interpolation_mode = 1
+top_level = true
+zoom = Vector2(0.75, 0.75)
+limit_left = -1922
+limit_top = -1080
+limit_right = 1922
+limit_bottom = 1080
+script = ExtResource("1_f6udf")
+MinZoom = 0.5
+
+[node name="PhantomCameraHost" type="Node" parent="MainCamera" unique_id=41979704]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("4_1xcnr")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=741591076]
+scale = Vector2(15, 15)
+
+[node name="Polygon2D" type="Polygon2D" parent="Sprite2D" unique_id=2013681654]
+position = Vector2(3.8666663, -8.533334)
+polygon = PackedVector2Array(-94, -49, 87, -49, 87, 67, -94, 67)
+
+[node name="CameraBounds" type="Area2D" parent="." unique_id=881786860]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds" unique_id=2046219475]
+scale = Vector2(1.0025396, 1)
+shape = SubResource("RectangleShape2D_f6udf")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2081116740]
+process_priority = 100
+script = ExtResource("5_3amdw")
+Speed = 600.0
+
+[node name="Buildings" type="Node2D" parent="." unique_id=1497835919]
+
+[node name="BuildManager" type="Node" parent="." unique_id=6435246]
+script = ExtResource("7_ow1sv")
