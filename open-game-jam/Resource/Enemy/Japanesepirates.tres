@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://chpu2pyhimwd7"]
+
+[ext_resource type="Script" uid="uid://bt0m2lnfdsyjj" path="res://Scripts/Data/EnemyData.cs" id="1_kw0ot"]
+
+[resource]
+script = ExtResource("1_kw0ot")
+EnemyName = "Japanese pirates"
+metadata/_custom_type_script = "uid://bt0m2lnfdsyjj"

@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bjdt1f5g38ocr"]
 
-[ext_resource type="Script" path="res://Scripts/Core/Archer.cs" id="1_archer"]
+[ext_resource type="Script" uid="uid://dgayek37fl4vc" path="res://Scripts/Core/Archer.cs" id="1_archer"]
+[ext_resource type="SpriteFrames" uid="uid://dxn01fotic7t3" path="res://Art/Archer/ArcherAnimations.tres" id="2_cvxje"]
+[ext_resource type="Resource" path="res://Resource/Building/Tower/ArcherData.tres" id="3_data"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vkdpk"]
 
@@ -8,14 +10,7 @@
 
 [node name="Archer" type="Node2D" unique_id=126271149]
 script = ExtResource("1_archer")
-AttackRangeRadius = 150.0
-AttackAreaRadius = 50.0
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=548627012]
-
-[node name="TestMarker" type="Polygon2D" parent="."]
-color = Color(0.95, 0.65, 0.2, 1)
-polygon = PackedVector2Array(-45, 45, 0, -60, 45, 45, 0, 25)
+Data = ExtResource("3_data")
 
 [node name="Range" type="Area2D" parent="." unique_id=304669570]
 
@@ -24,3 +19,10 @@ shape = SubResource("CircleShape2D_vkdpk")
 
 [node name="Attack Area" type="CollisionShape2D" parent="Range" unique_id=1690930704]
 shape = SubResource("CircleShape2D_wp5od")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=934697882]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("2_cvxje")
+animation = &"Attack"
+autoplay = "Idle"

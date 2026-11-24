@@ -2,10 +2,11 @@ using Godot;
 
 public partial class Tower : Building
 {
-    [Export] public float BaseDamage { get; set; }
-    [Export] public float AttackInterval { get; set; }
-    [Export] public float AttackRangeRadius { get; set; }
-    [Export] public float AttackAreaRadius { get; set; }
+    public TowerData TowerStats => Data as TowerData;
+    public float BaseDamage => TowerStats?.Damage ?? 0f;
+    public float AttackInterval => TowerStats?.AttackInterval ?? 0f;
+    public float AttackRangeRadius => TowerStats?.AttackRangeRadius ?? 0f;
+    public float AttackAreaRadius => TowerStats?.AttackAreaRadius ?? 0f;
     [Export] public CollisionShape2D AttackRange { get; set; }
     [Export] public CollisionShape2D AttackArea { get; set; }
 
@@ -16,6 +17,12 @@ public partial class Tower : Building
 
     public override void _Ready()
     {
+        if (TowerStats == null)
+        {
+            GD.PushError($"{Name} needs a TowerData resource.");
+            return;
+        }
+
         base._Ready();
         AttackRange ??= GetNodeOrNull<CollisionShape2D>("Range/Attack range");
         AttackArea ??= GetNodeOrNull<CollisionShape2D>("Range/Attack Area");

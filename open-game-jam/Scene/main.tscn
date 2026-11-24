@@ -7,12 +7,13 @@
 [ext_resource type="Script" uid="uid://dgv36y2xgh0a1" path="res://Scripts/Camera/CameraMoveFollow.cs" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://dcya2h1658ta" path="res://Scripts/Core/BuildGrid.cs" id="6_buildgrid"]
 [ext_resource type="Script" uid="uid://g6ftndbk5tqk" path="res://Scripts/Core/BuildManager.cs" id="7_ow1sv"]
+[ext_resource type="PackedScene" uid="uid://bhenj15wk37id" path="res://Scene/YongchangFortressMap.tscn" id="10_7y4ci"]
 
 [sub_resource type="Resource" id="Resource_ow1sv"]
 script = ExtResource("2_3amdw")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6udf"]
-size = Vector2(3844.8, 2160)
+size = Vector2(3844.8, 4608)
 
 [node name="Main" type="Node2D" unique_id=2067297367]
 
@@ -36,11 +37,11 @@ physics_interpolation_mode = 1
 top_level = true
 zoom = Vector2(0.75, 0.75)
 limit_left = -1922
-limit_top = -1080
+limit_top = -2304
 limit_right = 1922
-limit_bottom = 1080
+limit_bottom = 2304
 script = ExtResource("1_f6udf")
-MinZoom = 0.5
+MinZoom = 0.1
 
 [node name="PhantomCameraHost" type="Node" parent="MainCamera" unique_id=41979704]
 process_priority = 300
@@ -49,6 +50,7 @@ script = ExtResource("4_1xcnr")
 metadata/_custom_type_script = "uid://bd046eokvcnu2"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=741591076]
+visible = false
 scale = Vector2(15, 15)
 
 [node name="Polygon2D" type="Polygon2D" parent="Sprite2D" unique_id=2013681654]
@@ -56,13 +58,15 @@ position = Vector2(3.8666663, -8.533334)
 polygon = PackedVector2Array(-94, -49, 87, -49, 87, 67, -94, 67)
 
 [node name="CameraBounds" type="Area2D" parent="." unique_id=881786860]
+visible = false
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraBounds" unique_id=2046219475]
-scale = Vector2(1.0025396, 1)
+visible = false
+scale = Vector2(1.8, 1.05)
 shape = SubResource("RectangleShape2D_f6udf")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2081116740]
@@ -70,7 +74,9 @@ process_priority = 100
 script = ExtResource("5_3amdw")
 Speed = 600.0
 
-[node name="Buildings" type="Node2D" parent="." unique_id=1497835919]
-
 [node name="BuildManager" type="Node" parent="." unique_id=6435246]
 script = ExtResource("7_ow1sv")
+
+[node name="Buildings" type="Node2D" parent="." unique_id=450391628]
+
+[node name="YongchangFortressMap" parent="." unique_id=239278676 instance=ExtResource("10_7y4ci")]

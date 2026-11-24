@@ -1,0 +1,45 @@
+[gd_resource type="TileSet" format=3 uid="uid://du1vqy8vymn3d"]
+
+[ext_resource type="Texture2D" uid="uid://dvdvqp88nm11u" path="res://Art/Terrain/Structures/BrickWall_256.png" id="1_fi3dq"]
+[ext_resource type="Texture2D" uid="uid://c80b1e0nlremb" path="res://Art/Terrain/Structures/CastleGate_256.png" id="2_48h0w"]
+[ext_resource type="Texture2D" uid="uid://covstm3bx63q" path="res://Art/Terrain/Structures/CastleRuined_256.png" id="3_axeax"]
+[ext_resource type="Texture2D" uid="uid://2ruxhrlpiep7" path="res://Art/Terrain/Structures/CastleCorner_256.png" id="4_06v3v"]
+[ext_resource type="Texture2D" uid="uid://b7bkkmwnh10fk" path="res://Art/Terrain/Structures/CastleWall_256.png" id="5_eo0db"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0g8qw"]
+resource_name = "Brick Wall"
+texture = ExtResource("1_fi3dq")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vmtaw"]
+resource_name = "Castle Gate"
+texture = ExtResource("2_48h0w")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4hbwn"]
+resource_name = "Ruined Castle"
+texture = ExtResource("3_axeax")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4hd42"]
+resource_name = "Castle Corner"
+texture = ExtResource("4_06v3v")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kyk2l"]
+resource_name = "Castle Wall"
+texture = ExtResource("5_eo0db")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(256, 256)
+sources/0 = SubResource("TileSetAtlasSource_0g8qw")
+sources/1 = SubResource("TileSetAtlasSource_vmtaw")
+sources/2 = SubResource("TileSetAtlasSource_4hbwn")
+sources/3 = SubResource("TileSetAtlasSource_4hd42")
+sources/4 = SubResource("TileSetAtlasSource_kyk2l")

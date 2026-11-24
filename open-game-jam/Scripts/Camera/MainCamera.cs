@@ -55,12 +55,7 @@ public partial class MainCamera : Camera2D
     {
         if (@event is InputEventMouseButton button)
         {
-            if (button.ButtonIndex == MouseButton.Middle)
-            {
-                _isPanning = button.Pressed;
-                GetViewport().SetInputAsHandled();
-            }
-            else if (button.Pressed && button.ButtonIndex == MouseButton.WheelUp)
+            if (button.Pressed && button.ButtonIndex == MouseButton.WheelUp)
             {
                 _targetZoom *= ZoomStep;
                 GetViewport().SetInputAsHandled();
@@ -70,12 +65,6 @@ public partial class MainCamera : Camera2D
                 _targetZoom /= ZoomStep;
                 GetViewport().SetInputAsHandled();
             }
-        }
-        else if (@event is InputEventMouseMotion motion && _isPanning)
-        {
-            GlobalPosition -= motion.Relative / Zoom.X;
-            KeepViewInsideBounds();
-            GetViewport().SetInputAsHandled();
         }
     }
 
