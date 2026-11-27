@@ -4,16 +4,23 @@
 [ext_resource type="Script" uid="uid://dyrmcsyfcjapu" path="res://Scripts/Camera/MainCamera.cs" id="1_f6udf"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_3amdw"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="4_1xcnr"]
-[ext_resource type="Script" uid="uid://dgv36y2xgh0a1" path="res://Scripts/Camera/CameraMoveFollow.cs" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://dcya2h1658ta" path="res://Scripts/Core/BuildGrid.cs" id="6_buildgrid"]
+[ext_resource type="Script" uid="uid://xejxjywclokq" path="res://Scripts/Camera/PlayerController.cs" id="6_c2iwn"]
+[ext_resource type="SpriteFrames" uid="uid://dcc2dbss0slug" path="res://Art/Player/GeneralAnimations.tres" id="7_3pt4j"]
 [ext_resource type="Script" uid="uid://g6ftndbk5tqk" path="res://Scripts/Core/BuildManager.cs" id="7_ow1sv"]
+[ext_resource type="Script" uid="uid://bq72g6rndkp8p" path="res://Scripts/Core/Headquarters.cs" id="9_mxd2g"]
+[ext_resource type="Resource" path="res://Resource/Building/HeadquartersData.tres" id="10_0sxm5"]
 [ext_resource type="PackedScene" uid="uid://bhenj15wk37id" path="res://Scene/YongchangFortressMap.tscn" id="10_7y4ci"]
+[ext_resource type="Texture2D" uid="uid://dwp1tyfnhw08p" path="res://Art/Buildings/AncestralHall_256.png" id="11_hspdg"]
 
 [sub_resource type="Resource" id="Resource_ow1sv"]
 script = ExtResource("2_3amdw")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6udf"]
 size = Vector2(3844.8, 4608)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7y4ci"]
+radius = 12.0
 
 [node name="Main" type="Node2D" unique_id=2067297367]
 
@@ -23,10 +30,11 @@ CellSize = 256
 
 [node name="PhantomCamera2D" type="Node2D" parent="." unique_id=724334024 node_paths=PackedStringArray("follow_target")]
 top_level = true
+position = Vector2(-413, -35)
 script = ExtResource("1_2wwxx")
 priority = 10
 follow_mode = 2
-follow_target = NodePath("../CharacterBody2D")
+follow_target = NodePath("../Player")
 zoom = Vector2(0.75, 0.75)
 tween_resource = SubResource("Resource_ow1sv")
 limit_target = NodePath("../CameraBounds/CollisionShape2D")
@@ -35,6 +43,7 @@ metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 [node name="MainCamera" type="Camera2D" parent="." unique_id=1049685566]
 physics_interpolation_mode = 1
 top_level = true
+position = Vector2(-413, -35)
 zoom = Vector2(0.75, 0.75)
 limit_left = -1922
 limit_top = -2304
@@ -69,14 +78,38 @@ visible = false
 scale = Vector2(1.8, 1.05)
 shape = SubResource("RectangleShape2D_f6udf")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=2081116740]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=2081116740]
 process_priority = 100
-script = ExtResource("5_3amdw")
+position = Vector2(-413, -35)
+scale = Vector2(1.5, 1.5)
+script = ExtResource("6_c2iwn")
 Speed = 600.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=162407494]
+texture_filter = 1
+position = Vector2(0, -42)
+scale = Vector2(3, 3)
+sprite_frames = ExtResource("7_3pt4j")
+animation = &"Idle"
+autoplay = "Idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1870660823]
+position = Vector2(0, -12)
+shape = SubResource("CircleShape2D_7y4ci")
 
 [node name="BuildManager" type="Node" parent="." unique_id=6435246]
 script = ExtResource("7_ow1sv")
 
 [node name="Buildings" type="Node2D" parent="." unique_id=450391628]
+
+[node name="Headquarters" type="Node2D" parent="Buildings" unique_id=994899824]
+position = Vector2(-2, -103)
+scale = Vector2(2.5, 2.5)
+script = ExtResource("9_mxd2g")
+Data = ExtResource("10_0sxm5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Buildings/Headquarters" unique_id=621465641]
+texture_filter = 1
+texture = ExtResource("11_hspdg")
 
 [node name="YongchangFortressMap" parent="." unique_id=239278676 instance=ExtResource("10_7y4ci")]

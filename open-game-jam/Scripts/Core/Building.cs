@@ -2,6 +2,9 @@ using Godot;
 
 public partial class Building : Node2D
 {
+    [Signal]
+    public delegate void HealthChangedEventHandler(int currentHealth, int maxHealth);
+
     [Export] public BuildingData Data { get; set; }
 
     public int MaxHealth => Data?.MaxHealth ?? 0;
@@ -25,7 +28,14 @@ public partial class Building : Node2D
 
     public void TakeDamage(int damage)
     {
+        if (damage <= 0 || Health <= 0)
+            return;
+
         Health = Mathf.Max(0, Health - damage);
-        if (Health == 0) QueueFree();
+        EmitSignal(SignalName.HealthChanged, Health, MaxHealth);
+        if (Health == 0)
+            OnDestroyed();
     }
+
+    protected virtual void OnDestroyed() => QueueFree();
 }

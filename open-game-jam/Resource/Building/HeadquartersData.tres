@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="HeadquartersData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Data/HeadquartersData.cs" id="1_data"]
+
+[resource]
+script = ExtResource("1_data")
+DisplayName = "Headquarters"
+MaxHealth = 1000
+BuildCost = 0
+StartingLevel = 1
+StartingSilver = 500
+StartingArmyPay = 100

@@ -8,6 +8,7 @@ DisplayName = "Archer"
 MaxHealth = 100
 BuildCost = 50
 StartingLevel = 1
+SilverCost = 50
 Damage = 10.0
 AttackInterval = 1.0
 AttackRangeRadius = 150.0

@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bpdhc66l7yqaq" path="res://Art/YongchangFortress/YongchangFortress_Atlas.png" id="1_bsk2v"]
 [ext_resource type="Texture2D" uid="uid://covstm3bx63q" path="res://Art/Terrain/Structures/CastleRuined_256.png" id="2_av4qp"]
+[ext_resource type="Texture2D" uid="uid://dwp1tyfnhw08p" path="res://Art/Buildings/AncestralHall_256.png" id="3_hq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_av4qp"]
 texture = ExtResource("1_bsk2v")
@@ -283,6 +284,12 @@ texture = ExtResource("2_av4qp")
 texture_region_size = Vector2i(256, 256)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hq"]
+resource_name = "Ancestral Hall"
+texture = ExtResource("3_hq")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
 [resource]
 tile_size = Vector2i(256, 256)
 custom_data_layer_0/name = "CanDeploySoldier"
@@ -291,3 +298,4 @@ custom_data_layer_1/name = "IsWallPlatform"
 custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_av4qp")
 sources/1 = SubResource("TileSetAtlasSource_ui1kw")
+sources/2 = SubResource("TileSetAtlasSource_hq")

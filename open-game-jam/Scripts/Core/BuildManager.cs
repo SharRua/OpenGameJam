@@ -5,6 +5,7 @@ public partial class BuildManager : Node
 {
     [Export] public BuildGrid Grid { get; set; }
     [Export] public Node2D BuildingsRoot { get; set; }
+    [Export] public Headquarters Headquarters { get; set; }
     [Export] public PackedScene ArcherScene { get; set; }
 
     private static readonly Vector2I ArcherFootprint = new(1, 1);
@@ -15,10 +16,11 @@ public partial class BuildManager : Node
     {
         Grid ??= GetNodeOrNull<BuildGrid>("../BuildGrid");
         BuildingsRoot ??= GetNodeOrNull<Node2D>("../Buildings");
+        Headquarters ??= GetNodeOrNull<Headquarters>("../Buildings/Headquarters");
         ArcherScene ??= GD.Load<PackedScene>("res://Scripts/Core/Archer.tscn");
 
-        if (Grid == null || BuildingsRoot == null || ArcherScene == null)
-            GD.PushError("BuildManager needs BuildGrid, Buildings, and Archer.tscn.");
+        if (Grid == null || BuildingsRoot == null || Headquarters == null || ArcherScene == null)
+            GD.PushError("BuildManager needs BuildGrid, Buildings, Headquarters, and Archer.tscn.");
     }
 
     public override void _Process(double delta)
@@ -39,7 +41,7 @@ public partial class BuildManager : Node
         if (@event is not InputEventMouseButton button || !button.Pressed)
             return;
 
-        if (Grid == null || BuildingsRoot == null || ArcherScene == null)
+        if (Grid == null || BuildingsRoot == null || Headquarters == null || ArcherScene == null)
             return;
 
         if (_editingTower != null)
@@ -85,44 +87,69 @@ public partial class BuildManager : Node
         if (button.ButtonIndex == MouseButton.Right)
         {
             GetViewport().SetInputAsHandled();
-            BuildArcher(cell);
+            TryBuildTower(ArcherScene, cell);
         }
     }
 
     private Vector2 ToWorld(Vector2 viewportPosition) =>
         GetViewport().GetCanvasTransform().AffineInverse() * viewportPosition;
 
-    private void BuildArcher(Vector2I cell)
+    public bool TryBuildTower(PackedScene towerScene, Vector2I cell)
     {
-        GD.Print($"Right-clicked grid cell {cell}");
+        if (Grid == null || BuildingsRoot == null ||
+            !GodotObject.IsInstanceValid(Headquarters) || towerScene == null)
+            return false;
 
         if (!Grid.CanPlace(cell, ArcherFootprint))
         {
-            GD.Print($"Cannot build Archer in cell {cell}: outside grid or occupied.");
-            return;
+            GD.Print($"Cannot build tower in cell {cell}: outside grid or occupied.");
+            return false;
         }
 
-        Tower archer = ArcherScene.Instantiate<Tower>();
+        Node instance = towerScene.Instantiate();
+        if (instance is not Tower tower)
+        {
+            instance?.Free();
+            GD.PushError("The selected tower scene must have a Tower root node.");
+            return false;
+        }
+
+        if (tower.TowerStats is not TowerData stats || stats.SilverCost < 0)
+        {
+            tower.Free();
+            GD.PushError("The selected tower needs TowerData with a nonnegative SilverCost.");
+            return false;
+        }
+
         if (!Grid.TryOccupy(cell, ArcherFootprint))
         {
-            archer.QueueFree();
-            return;
+            tower.Free();
+            return false;
         }
 
-        BuildingsRoot.AddChild(archer);
-        archer.GlobalPosition = Grid.CellToWorldCenter(cell);
-        _towersByCell[cell] = archer;
-
-        archer.TreeExited += () =>
+        if (!Headquarters.TrySpendSilver(stats.SilverCost))
         {
-            if (_editingTower == archer)
+            Grid.Release(cell, ArcherFootprint);
+            tower.Free();
+            GD.Print($"Cannot build {stats.DisplayName}: need {stats.SilverCost} silver, have {Headquarters.Silver}.");
+            return false;
+        }
+
+        BuildingsRoot.AddChild(tower);
+        tower.GlobalPosition = Grid.CellToWorldCenter(cell);
+        _towersByCell[cell] = tower;
+
+        tower.TreeExited += () =>
+        {
+            if (_editingTower == tower)
                 _editingTower = null;
             _towersByCell.Remove(cell);
             if (GodotObject.IsInstanceValid(Grid))
                 Grid.Release(cell, ArcherFootprint);
         };
 
-        archer.OnPlaced();
-        GD.Print($"Built Archer in cell {cell} at {archer.GlobalPosition}");
+        tower.OnPlaced();
+        GD.Print($"Built {stats.DisplayName} in cell {cell} at {tower.GlobalPosition} for {stats.SilverCost} silver.");
+        return true;
     }
 }
